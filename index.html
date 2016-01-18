@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>The Homebrew Launcher - 3DS</title>
+    <meta name="keywords" content="homebrew" />
+    <meta name="description" content="ds" />
+    <link href='http://fonts.googleapis.com/css?family=Homenaje' rel='stylesheet' type='text/css'>
+    <link href="hbrew.css" rel="stylesheet" type="text/css" media="all" /><link rel="shortcut icon" href="images/icon.png"/>
+    <script>
+        // pretty masterful javascript code here
+        // i wrote it myself
+        function toggleDisplay(id)
+        {
+            var el = document.getElementById(id);
+            if(el.style.display == "none") el.style.display = "block";
+            else el.style.display = "none";
+        }
+
+        function getRopbinUrlFromVersion(v)
+        {
+            return "http://ihaveamac.github.io/ninjhax2.x/r/"+getFilenameFromVersion(v)+".bin";
+        }
+
+        var global_version = {};
+
+        function updateRopbin()
+        {
+            document.location.href = getRopbinUrlFromVersion([global_version[1], global_version[2], global_version[3], global_version[4], global_version[5], global_version[0]]);
+        }
+    </script>
+    <script src="payload_select.js"></script>
+</head>
+
+<body>
+    <a name="otherapp"></a> 
+    <div class="content">
+        <h2>ninjhax 2.x ropbins with no debug (aka menuhax with no colors/text)</h2>
+        <p>The filename format for the menuhax ropbin goes as: ropbinpayload_menuhax_USA11272_old3ds</p>
+        <p>Source code for these modified payloads can be found <a href="https://github.com/ihaveamac/ninjhax2.x">here</a>.</p>
+        <p>If you're not sure, just replace an existing one with one you download from here.</p>
+        <form class="firmware-form" method="post">
+            <select data-id="0" name="five"></select> 
+            <select data-id="1" name="zero"></select>.
+            <select data-id="2" name="one"></select>.
+            <select data-id="3" name="two"></select>
+            <select data-id="4" name="three" style="display: none"></select> <!-- does nothing but will break if i remove it. i'm too lazy so i'll hide it -->
+            <select data-id="5" name="four"></select>
+            <button type="button" onclick="updateRopbin()">Download ropbin</button>
+        </form>
+    </div>
+
+    <div class="content">
+        <h2>Credits</h2>
+        <p>
+        smealum and co. for all of ninjhax 2.x, ihaveamac (me) for hiding the debug code, zoogie for pointing me in the right direction
+        </p>
+
+    </div>
+</body>
+</html>
