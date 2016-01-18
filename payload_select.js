@@ -1,20 +1,22 @@
 function getRegion(v)
 {
-    return v[4];
+    if(v[4]=="E")
+    {
+        return "EUR";
+    }else if(v[4]=="U"){
+        return "USA";
+    }else if(v[4]=="J"){
+        return "JPN";
+    }
 }
 
 function getFirmVersion(v)
 {
     if(v[5]=="NEW")
     {
-        return "N3DS";
+        return "new";
     }else{
-        if(v[0]<5)
-        {
-            return "PRE5";
-        }else{
-            return "POST5";
-        }
+        return "old";
     }
 }
 
@@ -50,9 +52,9 @@ function getMenuVersion(v)
         {
             return "17415";
         }
-        else if (v[1]==9 && v[4]=="U")
+        else if (v[1]==9 && v[4]=="USA")
         {
-            return "20480_usa";
+            return "20480";
         }
         else if (v[1]>=8)
         {
@@ -64,7 +66,7 @@ function getMenuVersion(v)
         {
             if (v[4]=="U")
             {
-                return "20480_usa";
+                return "20480";
             }
             else
             {
@@ -72,9 +74,9 @@ function getMenuVersion(v)
             }
         }else if(v[1]==1)
         {
-            if (v[4]=="U")
+            if (v[4]=="USA")
             {
-                return "21504_usa";
+                return "21504";
             }
             else
             {
@@ -82,9 +84,9 @@ function getMenuVersion(v)
             }
         }else if(v[1]==2)
         {
-            if (v[4]=="U")
+            if (v[4]=="USA")
             {
-                return "22528_usa";
+                return "22528";
             }
             else
             {
@@ -92,9 +94,9 @@ function getMenuVersion(v)
             }
         }else if(v[1]==3)
         {
-            if (v[4]=="U")
+            if (v[4]=="USA")
             {
-                return "23552_usa";
+                return "23552";
             }
             else
             {
@@ -104,22 +106,10 @@ function getMenuVersion(v)
     }
 }
 
-
-function getMsetVersion(v)
-{
-    if(v[0] == 9 && v[1] < 6)
-    {
-        return "8203";
-    }
-    else
-    {
-        return "9221";
-    }
-}
-
 function getFilenameFromVersion(v)
 {
-    return getFirmVersion(v)+"_"+getRegion(v)+"_"+getMenuVersion(v)+"_"+getMsetVersion(v);
+    //return getFirmVersion(v)+"_"+getRegion(v)+"_"+getMenuVersion(v)+"_"+getMsetVersion(v);
+    return "ropbinpayload_menuhax_"+getRegion(v)+getMenuVersion(v)+"_"+getFirmVersion(v)+"3ds";
 }
 
 window.onload=function(){
