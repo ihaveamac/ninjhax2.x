@@ -30,7 +30,7 @@ void gspGpuInit()
 
 	//set subscreen to red
 	u32 regData=0x010000FF;
-	GSPGPU_WriteHWRegs(NULL, 0x202A04, &regData, 4);
+	//GSPGPU_WriteHWRegs(NULL, 0x202A04, &regData, 4);
 
 	//setup our gsp shared mem section
 	u8 threadID;

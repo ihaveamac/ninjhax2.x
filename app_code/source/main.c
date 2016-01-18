@@ -51,7 +51,7 @@ void gspGpuInit()
 
 	//set subscreen to blue
 	u32 regData=0x01FF0000;
-	GSPGPU_WriteHWRegs(NULL, 0x202A04, &regData, 4);
+	//GSPGPU_WriteHWRegs(NULL, 0x202A04, &regData, 4);
 
 	//setup our gsp shared mem section
 	u8 threadID;
@@ -113,14 +113,14 @@ void hex2str(char* out, u32 val)
 
 void renderString(char* str, int x, int y)
 {
-	drawString(top_framebuffer,str,x,y);
+	//drawString(top_framebuffer,str,x,y);
 	GSPGPU_FlushDataCache(NULL, top_framebuffer, 240*400*3);
 }
 
 void centerString(char* str, int y)
 {
 	int x=200-(strlen(str)*4);
-	drawString(top_framebuffer,str,x,y);
+	//drawString(top_framebuffer,str,x,y);
 	GSPGPU_FlushDataCache(NULL, top_framebuffer, 240*400*3);
 }
 
