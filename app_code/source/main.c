@@ -141,10 +141,10 @@ void clearScreen(u8 shade)
 void drawTitleScreen(char* str)
 {
 	clearScreen(0x00);
-	centerString("debug",0);
+	/*centerString("debug",0);
 	centerString(HAX_NAME_VERSION,10);
 	centerString(BUILDTIME,20);
-	renderString(str, 0, 40);
+	renderString(str, 0, 40);*/
 }
 
 void resetConsole(void)

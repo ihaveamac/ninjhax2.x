@@ -718,7 +718,8 @@ int main(u32 loaderparam, char** argv)
 	#endif
 
 	// regionfour stuff
-	drawTitleScreen("searching for target...");
+    clearScreen(0x00);
+	//drawTitleScreen("searching for target...");
 
 	//search for target object in home menu's linear heap
 	const u32 start_addr = FIRM_LINEARSYSTEM;
@@ -775,7 +776,7 @@ int main(u32 loaderparam, char** argv)
 		}
 		if(i<end)
 		{
-			drawTitleScreen("searching for target...\n    target locked ! engaging.");
+			//drawTitleScreen("searching for target...\n    target locked ! engaging.");
 
 			target_address = block_start + i * 4;
 
@@ -796,7 +797,8 @@ int main(u32 loaderparam, char** argv)
 	#ifndef LOADROPBIN
 		drawTitleScreen("\n   regionFOUR is ready.\n   insert your gamecard and press START.");
 	#else
-		drawTitleScreen("\n   The homemenu ropbin is ready.");
+        clearScreen(0x00);
+		//drawTitleScreen("\n   The homemenu ropbin is ready.");
 	#endif
 	
 	//disable GSP module access
