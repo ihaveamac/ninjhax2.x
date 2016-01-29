@@ -718,7 +718,7 @@ int main(u32 loaderparam, char** argv)
 	#endif
 
 	// regionfour stuff
-    clearScreen(0x00);
+	clearScreen(0x00);
 	//drawTitleScreen("searching for target...");
 
 	//search for target object in home menu's linear heap
@@ -780,9 +780,9 @@ int main(u32 loaderparam, char** argv)
 
 			target_address = block_start + i * 4;
 
-			drawHex(target_address, 8, 50+cnt*10);
-			drawHex((linear_buffer)[i+6], 100, 50+cnt*10);
-			drawHex((linear_buffer)[i+0x1f], 200, 50+cnt*10);
+			//drawHex(target_address, 8, 50+cnt*10);
+			//drawHex((linear_buffer)[i+6], 100, 50+cnt*10);
+			//drawHex((linear_buffer)[i+0x1f], 200, 50+cnt*10);
 
 			inject_payload(linear_buffer, target_address+0x18);
 
@@ -797,7 +797,7 @@ int main(u32 loaderparam, char** argv)
 	#ifndef LOADROPBIN
 		drawTitleScreen("\n   regionFOUR is ready.\n   insert your gamecard and press START.");
 	#else
-        clearScreen(0x00);
+		clearScreen(0x00);
 		//drawTitleScreen("\n   The homemenu ropbin is ready.");
 	#endif
 	
