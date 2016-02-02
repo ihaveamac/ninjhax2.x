@@ -1,5 +1,9 @@
-ninjhax 2.x
+ninjhax 2.x - no debug mod
 =======
+
+This just hides the colors and debug text.
+
+Original repo: https://github.com/smealum/ninjhax2.x
 
 ### Credits
 
