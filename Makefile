@@ -158,3 +158,8 @@ clean:
 	@cd app_code && make clean
 	@cd menu_ropbin_patcher && make clean
 	@echo "all cleaned up !"
+
+cp:
+	@rm -rf p/*
+	@rm -rf q/*
+	@rm -rf r/*
