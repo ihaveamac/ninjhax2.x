@@ -1,12 +1,24 @@
+// I kind of made this pretty ugly >,>
+// if you can improve this without breaking functionality that'd be great
+
 function getRegion(v)
 {
-    if(v[4]=="E")
+    return v[4];
+}
+
+function getRegion_Menuhax(v)
+{
+    if (v[4]=="U")
     {
-        return "EUR";
-    }else if(v[4]=="U"){
-        return "USA";
-    }else if(v[4]=="J"){
-        return "JPN";
+    	return "USA";
+    }
+    else if (v[4]=="E")
+    {
+    	return "EUR";
+    }
+    else
+    {
+    	return "JPN";
     }
 }
 
@@ -14,13 +26,28 @@ function getFirmVersion(v)
 {
     if(v[5]=="NEW")
     {
-        return "new";
+        return "N3DS";
     }else{
-        return "old";
+        if(v[0]<5)
+        {
+            return "PRE5";
+        }else{
+            return "POST5";
+        }
     }
 }
 
-function getMenuVersion(v)
+function getFirmVersion_Menuhax(v)
+{
+    if(v[5]=="NEW")
+    {
+        return "new";
+    }else{
+		return "old";
+    }
+}
+
+function getMenuVersion(v, menuhax)
 {
     if(v[0]==9)
     {
@@ -52,9 +79,9 @@ function getMenuVersion(v)
         {
             return "17415";
         }
-        else if (v[1]==9 && v[4]=="USA")
+        else if (v[1]==9 && v[4]=="U")
         {
-            return "20480";
+            return "20480"+(menuhax ? "" : "_usa");
         }
         else if (v[1]>=8)
         {
@@ -66,7 +93,7 @@ function getMenuVersion(v)
         {
             if (v[4]=="U")
             {
-                return "20480";
+                return "20480"+(menuhax ? "" : "_usa");
             }
             else
             {
@@ -74,9 +101,9 @@ function getMenuVersion(v)
             }
         }else if(v[1]==1)
         {
-            if (v[4]=="USA")
+            if (v[4]=="U")
             {
-                return "21504";
+                return "21504"+(menuhax ? "" : "_usa");
             }
             else
             {
@@ -84,9 +111,9 @@ function getMenuVersion(v)
             }
         }else if(v[1]==2)
         {
-            if (v[4]=="USA")
+            if (v[4]=="U")
             {
-                return "22528";
+                return "22528"+(menuhax ? "" : "_usa");
             }
             else
             {
@@ -94,22 +121,48 @@ function getMenuVersion(v)
             }
         }else if(v[1]==3)
         {
-            if (v[4]=="USA")
+            if (v[4]=="U")
             {
-                return "23552";
+                return "23552"+(menuhax ? "" : "_usa");
             }
             else
             {
                 return "22528";
             }
+        }else if(v[1]>=4)
+        {
+            if (v[4]=="U")
+            {
+                return "24578"+(menuhax ? "" : "_usa");
+            }
+            else
+            {
+                return "23554";
+            }
         }
+    }
+}
+
+function getMsetVersion(v)
+{
+    if(v[0] == 9 && v[1] < 6)
+    {
+        return "8203";
+    }
+    else
+    {
+        return "9221";
     }
 }
 
 function getFilenameFromVersion(v)
 {
-    //return getFirmVersion(v)+"_"+getRegion(v)+"_"+getMenuVersion(v)+"_"+getMsetVersion(v);
-    return "ropbinpayload_menuhax_"+getRegion(v)+getMenuVersion(v)+"_"+getFirmVersion(v)+"3ds";
+    return getFirmVersion(v)+"_"+getRegion(v)+"_"+getMenuVersion(v, false)+"_"+getMsetVersion(v);
+}
+
+function getMenuhaxFilenameFromVersion(v)
+{
+    return "ropbinpayload_menuhax_"+getRegion_Menuhax(v)+getMenuVersion(v, true)+"_"+getFirmVersion_Menuhax(v)+"3ds";
 }
 
 window.onload=function(){
@@ -172,7 +225,9 @@ window.onload=function(){
             '0': zeroMicro_1,
             '1': zeroMicro_1,
             '2': zeroMicro_1,
-            '3': zeroMicro_1
+            '3': zeroMicro_1,
+            '4': zeroMicro_1,
+            '5': zeroMicro_1
         }
     }
 

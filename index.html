@@ -2,10 +2,34 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ninjhax 2.x ropbins with no debug (aka menuhax with no colors/text)</title>
+    <title>ninjhax 2.x with no debug colors or text</title>
     <meta name="keywords" content="homebrew" />
     <meta name="description" content="ninjhax 2.x ropbins with no debug (aka menuhax with no colors/text)" />
-    <link href="hbrew.css" rel="stylesheet" type="text/css" media="all" /><link rel="shortcut icon" href="images/icon.png"/>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+    <style>
+    	body {
+			margin: 40px auto;
+			max-width: 670px;
+			line-height: 1.6;
+			font-size: 18px;
+			color: #444;
+			padding: 0 10px;
+			font-family: 'Ubuntu', sans-serif;
+		}
+		h1, h2, h3 {
+			line-height:1.2;
+		}
+		hr {
+			border-style: solid;
+			color: #444;
+		}
+		img {
+			max-width: 100%;
+		}
+		.firmware-form {
+			text-align: center;
+		}
+	</style>
     <script>
         // pretty masterful javascript code here
         // i wrote it myself
@@ -16,47 +40,79 @@
             else el.style.display = "none";
         }
 
+        function getUrlFromVersion(v)
+        {
+            return "http://ihaveamac.github.io/ninjhax2.x/otherapp/"+getFilenameFromVersion(v)+".bin";
+        }
+
         function getRopbinUrlFromVersion(v)
         {
             return "http://ihaveamac.github.io/ninjhax2.x/r/"+getFilenameFromVersion(v)+".bin";
         }
 
+        function getRopbinUrlFromVersion_Menuhax(v)
+        {
+            return "http://ihaveamac.github.io/ninjhax2.x/r-menuhax/"+getMenuhaxFilenameFromVersion(v)+".bin";
+        }
+
+        function getQrCodeFromVersion(v)
+        {
+            return "q/"+getFilenameFromVersion(v)+".png";
+        }
+
         var global_version = {};
+
+        function updatePayload()
+        {
+            document.location.href = getUrlFromVersion([global_version[1], global_version[2], global_version[3], global_version[4], global_version[5], global_version[0]]);
+        }
 
         function updateRopbin()
         {
             document.location.href = getRopbinUrlFromVersion([global_version[1], global_version[2], global_version[3], global_version[4], global_version[5], global_version[0]]);
         }
+
+        function updateMenuhaxRopbin()
+        {
+            document.location.href = getRopbinUrlFromVersion_Menuhax([global_version[1], global_version[2], global_version[3], global_version[4], global_version[5], global_version[0]]);
+        }
+        
+		function updateQrCode()
+		{
+			document.getElementById("qr_code_out").src = getQrCodeFromVersion([global_version[1], global_version[2], global_version[3], global_version[4], global_version[5], global_version[0]]);
+		}
     </script>
     <script src="payload_select.js"></script>
 </head>
 <body>
     <div class="content">
-        <h2>ninjhax 2.x ropbins with no debug (aka menuhax with no colors/text)</h2>
-        <p>You should install menuhax before you place this ropbin on your SD card. If you don't want to, hold X while installing menuhax.</p>
+        <h2>ninjhax 2.x with no debug colors or text</h2>
+        <p>Before you use the otherapp/ropbin payload with an entry point (menuhax, ironhax, etc.), you should install it normally first.</p>
         <p>Source code for these modified payloads can be found <a href="https://github.com/ihaveamac/ninjhax2.x">here</a>.</p>
-        <p>See it in action <a href="https://www.youtube.com/watch?v=nxitiIXJU-0">here</a>.</p>
         <form class="firmware-form" method="post">
             <select data-id="0" name="five"></select> 
             <select data-id="1" name="zero"></select>.
             <select data-id="2" name="one"></select>.
             <select data-id="3" name="two"></select>
             <select data-id="4" name="three" style="display: none"></select> <!-- does nothing but will break if i remove it. i'm too lazy so i'll hide it -->
-            <select data-id="5" name="four"></select>
-            <button type="button" onclick="updateRopbin()">Download ropbin</button>
+            <select data-id="5" name="four"></select><br>
+            <button type="button" onclick="updatePayload()">Download otherapp</button>
+            <button type="button" onclick="updateRopbin()">Download ropbin</button><br>
+            <button type="button" onclick="updateQrCode()">Show Cubic Ninja QR Code</button>
+            <button type="button" onclick="updateMenuhaxRopbin()">Download ropbin (menuhax)</button>
+        	<div style="text-align: center;"><img id="qr_code_out"></div>
         </form>
     </div>
     <div class="content">
-        <h2>Blank image display at boot</h2>
-        <p>
-        If you want to hide the image display so it won't display junk or "the menuhax loader", you want to place this <a href="imagedisplay.png">imagedisplay.png</a> at /3ds/menuhax_manager and then configure image display within menuhax_manager.
-        </p>
+        <h2>Blank image display at menuhax boot</h2>
+        <p>If you want to hide the image display so it won't display junk or "the menuhax loader", you want to place this <a href="imagedisplay.png">imagedisplay.png</a> at /3ds/menuhax_manager and then configure image display within menuhax_manager.</p>
     </div>
     <div class="content">
         <h2>Credits</h2>
         <p>
-        smealum and co. for all of ninjhax 2.x, ihaveamac (me) for hiding the debug code, zoogie for pointing me in the right direction
-        </p>
+        smealum and co. for all of ninjhax 2.x<br>
+        ihaveamac (me) for hiding the debug code<br>
+        zoogie for pointing me in the right direction</p>
     </div>
 </body>
 </html>
