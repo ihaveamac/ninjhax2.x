@@ -1,4 +1,5 @@
 OUTPUT_ARCH(arm)
+ENTRY(_start)
 
 MEMORY
 {
@@ -11,6 +12,7 @@ SECTIONS
 	.text : ALIGN(0x100) {
 		build/crt0.o(.init)
 		*(.text)
+		*(.text.*)
 		*(.rodata)
 	}
 
@@ -20,4 +22,3 @@ SECTIONS
 	}
 	_bss_end = .;
 }
-
