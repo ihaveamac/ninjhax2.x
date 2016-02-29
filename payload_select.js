@@ -129,7 +129,7 @@ function getMenuVersion(v, menuhax)
             {
                 return "22528";
             }
-        }else if(v[1]>=4)
+        }else if(v[1]==4 || v[1]==5)
         {
             if (v[4]=="U")
             {
@@ -138,6 +138,16 @@ function getMenuVersion(v, menuhax)
             else
             {
                 return "23554";
+            }
+        }else if(v[1]>=6)
+        {
+            if (v[4]=="U")
+            {
+                return "25600"+(menuhax ? "" : "_usa");
+            }
+            else
+            {
+                return "24576";
             }
         }
     }
@@ -201,6 +211,16 @@ window.onload=function(){
         '28' : regions,
         '29' : regions,
         '30' : regions,
+        '31' : regions,
+        '32' : regions,
+        '33' : regions,
+        '34' : regions,
+        '35' : regions,
+        '36' : regions,
+        '37' : regions,
+        '38' : regions,
+        '39' : regions,
+        '137' : regions,
         '999' : regions
     }
 
@@ -227,7 +247,8 @@ window.onload=function(){
             '2': zeroMicro_1,
             '3': zeroMicro_1,
             '4': zeroMicro_1,
-            '5': zeroMicro_1
+            '5': zeroMicro_1,
+            '6': zeroMicro_1
         }
     }
 
