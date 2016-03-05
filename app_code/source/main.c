@@ -15,21 +15,6 @@ int _strcmp(char*, char*);
 
 char console_buffer[4096];
 
-Result _HBSPECIAL_GetHandle(Handle handle, u32 index, Handle* out)
-{
-	u32* cmdbuf=getThreadCommandBuffer();
-	cmdbuf[0]=0x00040040; //request header code
-	cmdbuf[1]=index;
-	
-	Result ret=0;
-	if((ret=svc_sendSyncRequest(handle)))return ret;
-
-	if(out && !cmdbuf[1])*out=cmdbuf[5];
-
-	return cmdbuf[1];
-}
-
-
 u8* gspHeap;
 u32* gxCmdBuf;
 
@@ -378,18 +363,6 @@ void _main()
 	receive_handle(&hbndspHandle, "hb:ndsp");
 	receive_handle(&hbkillHandle, "hb:kill");
 
-	// print_str("\nconnecting to hb:SPECIAL...\n");
-	// ret = svc_connectToPort(&hbSpecialHandle, "hb:SPECIAL");
-	// print_hex(ret); print_str(", "); print_hex(hbSpecialHandle);
-
-	// print_str("\ngrabbing fs:USER handle from menu through hb:SPECIAL\n");
-	// ret = _HBSPECIAL_GetHandle(hbSpecialHandle, 2, &fsuHandle);
-	// print_hex(ret); print_str(", "); print_hex(fsuHandle);
-
-	// print_str("\ngrabbing ns:s handle from menu through hb:SPECIAL\n");
-	// ret = _HBSPECIAL_GetHandle(hbSpecialHandle, 3, &nssHandle);
-	// print_hex(ret); print_str(", "); print_hex(nssHandle);
-
 	// copy bootloader code
 	GSPGPU_FlushDataCache(NULL, (u8*)&gspHeap[0x00100000], 0x00005000);
 	doGspwn(_bootloaderAddress, (u32*)&gspHeap[0x00100000], 0x00005000);
@@ -447,23 +420,48 @@ void _main()
 
 	svc_closeHandle(_aptLockHandle);
 
+	// TODO : add error display for when can't find 3DSX
+
+	Handle fileHandle;
+	if(argbuffer[0] != 0)
+	{
+		char* arg0 = (char*)&argbuffer[1];
+		char* filename = NULL;
+		int restore = 0;
+		if (_strcmp(arg0, "sdmc:/")>=6)
+			filename = arg0 + 5; // skip "sdmc:"
+		else if (_strcmp(arg0, "3dslink:/")>=9)
+		{
+			// convert the 3dslink path
+			restore = 1;
+			filename = arg0 + 4;
+			memcpy(filename, "/3ds", 4);
+		}
+		if(!filename)*(u32*)0xC0DE0000=ret;
+
+		// convert the path to UTF-16
+		int path_len = utf8_to_utf16(path_buffer, filename, sizeof(path_buffer)/2);
+		path_buffer[path_len] = 0;
+
+		// restore 3dslink path
+		if(restore)
+			memcpy(filename, "ink:", 4);
+
+		// open the 3dsx
+		FS_archive sdmcArchive = (FS_archive){0x9, (FS_path){PATH_EMPTY, 1, (u8*)""}};
+		FS_path filePath = (FS_path){PATH_WCHAR, 2*(path_len+1), (u8*)path_buffer};
+		ret = FSUSER_OpenFileDirectly(fsuHandle, &fileHandle, sdmcArchive, filePath, FS_OPEN_READ, FS_ATTRIBUTE_NONE);
+		if(ret)*(u32*)0xC0DE0000=ret;
+	}
+
 	// free heap (has to be the very last thing before jumping to app as contains bss)
 	u32 out; svc_controlMemory(&out, (u32)_heap_base, 0x0, _heap_size, MEMOP_FREE, 0x0);
-
-	// TODO : add error display for when can't find 3DSX
 
 	if(argbuffer[0] == 0)
 	{
 		void (*app_runmenu)() = (void*)(0x00100000 + 4);
 		app_runmenu();
 	}else{
-		Handle fileHandle;
-		FS_archive sdmcArchive = (FS_archive){0x9, (FS_path){PATH_EMPTY, 1, (u8*)""}};
-		char* filename = ((char*)&argbuffer[1]) + 5; // skip "sdmc:"
-		FS_path filePath = (FS_path){PATH_CHAR, strlen(filename)+1, (u8*)filename};
-		ret = FSUSER_OpenFileDirectly(fsuHandle, &fileHandle, sdmcArchive, filePath, FS_OPEN_READ, FS_ATTRIBUTE_NONE);
-		if(ret)*(u32*)0xC0DE0000=ret;
-
 		void (*app_run3dsx)(Handle executable, u32* argbuf, u32 size) = (void*)(0x00100000);
 		app_run3dsx(fileHandle, argbuffer, 0x200*4);
 	}

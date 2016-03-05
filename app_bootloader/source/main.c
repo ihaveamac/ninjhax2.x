@@ -456,6 +456,7 @@ void run3dsx(Handle executable, u32* argbuf)
 		setup3dsx(executable, (memorymap_t*)_customProcessMap, serviceList, argbuf);
 	}else setup3dsx(executable, (memorymap_t*)app_maps[*targetProcessIndex], serviceList, argbuf);
 	FSFILE_Close(executable);
+	svc_closeHandle(executable);
 
 	gspGpuExit();
 	exitSrv();
@@ -576,7 +577,7 @@ void changeProcess(int processId, u32* argbuf, u32 argbuflength)
 
 void _changeProcess(int processId, u32* argbuf, u32 arglength);
 
-void runTitle(u8 mediatype, u32* argbuf, u32 argbuflength, u32 tid_low, u32 tid_high)
+void runTitleCustom(u8 mediatype, u32* argbuf, u32 argbuflength, u32 tid_low, u32 tid_high)
 {
 	initSrv();
 	gspGpuInit();
@@ -602,7 +603,8 @@ void runTitle(u8 mediatype, u32* argbuf, u32 argbuflength, u32 tid_low, u32 tid_
 	int i; for(i=0; i<_serviceList.num; i++)if(!strcmp(_serviceList.services[i].name, "fs:USER"))fsuserHandle=_serviceList.services[i].handle;
 	if(!fsuserHandle)*(vu32*)0xCAFE0001=0;
 
-	getProcessMap(fsuserHandle, mediatype, tid_low, tid_high, mmap, (u32*)gspHeap);
+	if(_mmap) memcpy(mmap, _mmap, size_memmap(*_mmap));
+	else getProcessMap(fsuserHandle, mediatype, tid_low, tid_high, mmap, (u32*)gspHeap);
 
 	argbuffer_length = (u32)((void*)mmap - (void*)argbuffer) + size_memmap(*mmap);
 
@@ -613,6 +615,11 @@ void runTitle(u8 mediatype, u32* argbuf, u32 argbuflength, u32 tid_low, u32 tid_
 	u32 out; svc_controlMemory(&out, (u32)_heap_base, 0x0, _heap_size, MEMOP_FREE, 0x0);
 
 	_changeProcess(-2, argbuffer, argbuffer_length);
+}
+
+void runTitle(u8 mediatype, u32* argbuf, u32 argbuflength, u32 tid_low, u32 tid_high)
+{
+	runTitleCustom(mediatype, argbuf, argbuflength, tid_low, tid_high, NULL);
 }
 
 typedef struct

