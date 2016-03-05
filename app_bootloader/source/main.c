@@ -577,7 +577,7 @@ void changeProcess(int processId, u32* argbuf, u32 argbuflength)
 
 void _changeProcess(int processId, u32* argbuf, u32 arglength);
 
-void runTitleCustom(u8 mediatype, u32* argbuf, u32 argbuflength, u32 tid_low, u32 tid_high)
+void runTitleCustom(u8 mediatype, u32* argbuf, u32 argbuflength, u32 tid_low, u32 tid_high, memorymap_t* _mmap)
 {
 	initSrv();
 	gspGpuInit();
