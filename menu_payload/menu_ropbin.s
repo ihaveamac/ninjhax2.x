@@ -51,7 +51,7 @@ DUMMY_PTR equ (WAITLOOP_DST - 4)
 	rop: ; real ROP starts here
 
 		; debug
-			writehwreg 0x202A04, 0x01FFFFFF
+			;writehwreg 0x202A04, 0x01FFFFFF
 
 		; looks like this is actually not needed
 		; plug dsp handle leak
@@ -133,7 +133,7 @@ DUMMY_PTR equ (WAITLOOP_DST - 4)
 		; flush app_code because we just wrote to it and are about to DMA it
 			flush_dcache MENU_OBJECT_LOC + appCode, 0x4000
 
-			writehwreg 0x202A04, 0x0100FF00
+			;writehwreg 0x202A04, 0x0100FF00
 			
 			send_gx_cmd MENU_OBJECT_LOC + gxCommandAppHook - object
 			send_gx_cmd MENU_OBJECT_LOC + gxCommandAppHook - object
@@ -156,7 +156,7 @@ DUMMY_PTR equ (WAITLOOP_DST - 4)
 		; sleep for a bit
 			sleep 200*1000*1000, 0x00000000
 
-			writehwreg 0x202A04, 0x0100FFFF
+			;writehwreg 0x202A04, 0x0100FFFF
 
 		; release gsp rights
 			gsp_release_right
@@ -560,7 +560,7 @@ DUMMY_PTR equ (WAITLOOP_DST - 4)
 				.word 0x000000FF ; by default we do nothing with the n3ds cpu config
 				.word 0x00000000
 			gsp_acquire_right
-			writehwreg 0x202A04, 0x01FF00FF
+			;writehwreg 0x202A04, 0x01FF00FF
 			; todo : add cache invalidation for ropbin
 			sleep 100*1000*1000, 0x00000000
 	waitLoop_end:
