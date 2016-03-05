@@ -14,6 +14,7 @@
 int _strcmp(char*, char*);
 
 char console_buffer[4096];
+u16 path_buffer[256];
 
 u8* gspHeap;
 u32* gxCmdBuf;
